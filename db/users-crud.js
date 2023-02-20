@@ -1,4 +1,4 @@
-const pool = require('../db_pool');
+const pool = require('../db-pool');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const UserNotFound = require('../errors/user-not-found');

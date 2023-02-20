@@ -1,6 +1,6 @@
-const UserController = require('../controllers/users_controller');
+const UserController = require('../controllers/users-controller');
 const handler = require('../middlewares/handler');
-const validateUserRequest = require('../middlewares/validateUserRequest');
+const validateUserRequest = require('../middlewares/validate-user-request');
 
 const express = require('express');
 const route = express.Router();

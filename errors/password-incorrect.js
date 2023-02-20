@@ -1,13 +1,9 @@
-class InvalidPassword extends Error{
+const CustomError = require("./custom-error-class");
+
+class InvalidPassword extends CustomError{
     constructor(){
-        super("Password is incorrect");
+        super("Password is incorrect",401);
         Error.captureStackTrace(this, this.constructor);
-
-        this.status = 401;
-    }
-
-    statusCode(){
-        return this.status;
     }
 }
 

@@ -1,4 +1,4 @@
-const User = require('../db/users_crud');
+const User = require('../db/users-crud');
 const Controller = require('./controller');
 
 class UserController extends Controller {

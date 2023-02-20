@@ -1,19 +1,11 @@
-const pool = require('../db_pool');
+const pool = require('../db-pool');
 
-function executeQuery(query){
-    return new Promise(async (resolve,reject)=>{
-        try{
-            const result = await pool.query(query);
-            console.log(result);
-            resolve(result);
-        }catch(err){
-            console.log(err);
-            reject(err);
-        }
-    })
+async function executeQuery(query) {
+    const result = await pool.query(query);
+    return result;
 }
 
-exports.getFiles = (userId)=>{
+exports.getFiles = (userId) => {
     let query = `SELECT * FROM files WHERE fileowner = ${userId}`;
     return executeQuery(query);
 }
@@ -25,12 +17,12 @@ exports.addFile = (file) => {
     return executeQuery(query);
 }
 
-exports.getFile = (userId,fileId)=>{
+exports.getFile = (userId, fileId) => {
     const query = `SELECT * FROM files where id = ${fileId} and fileowner = ${userId}`;
     return executeQuery(query);
 }
 
-exports.removeFile = (userId,fileId)=>{
+exports.removeFile = (userId, fileId) => {
     const query = `DELETE FROM files where id = ${fileId} and fileowner = ${userId}`;
     return executeQuery(query);
 }

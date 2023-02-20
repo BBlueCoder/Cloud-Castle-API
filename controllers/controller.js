@@ -1,26 +1,21 @@
-class Controller{
-    
-    constructor(req,resp){
+class Controller {
+
+    constructor(req, resp) {
         this.req = req;
         this.resp = resp;
     }
 
-    async checkResult(obj,method,...args){
-        try{
-            const result = await obj[method](...args);
-            this.sendSuccessResponse(result.rows);
-        }catch(err){
-            console.log(err);
-            this.sendFailResponse(err);
-        }
+    async checkResult(obj, method, ...args) {
+        const result = await obj[method](...args);
+        this.sendSuccessResponse(result.rows);
     }
 
-    sendSuccessResponse(data){
-        this.resp.status(200).json(data); 
+    sendSuccessResponse(data) {
+        this.resp.status(200).json(data);
     }
 
-    sendFailResponse(err){
-        this.resp.status(400).json({error : ""+err});
+    sendFailResponse(err) {
+        this.resp.status(400).json({ error: "" + err });
     }
 }
 

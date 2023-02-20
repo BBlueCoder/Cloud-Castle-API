@@ -1,10 +1,10 @@
 const CustomError = require("./custom-error-class");
 
-class UserNotFound extends CustomError{
+class FileNotFound extends CustomError{
     constructor(){
-        super("User not found, please enter a valid username",404);
+        super("File not found",404);
         Error.captureStackTrace(this, this.constructor);
     }
 }
 
-module.exports = UserNotFound;
+module.exports = FileNotFound;
