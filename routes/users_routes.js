@@ -1,15 +1,18 @@
 const UserController = require('../controllers/users_controller');
+const handler = require('../middlewares/handler');
+const validateUserRequest = require('../middlewares/validateUserRequest');
+
 const express = require('express');
 const route = express.Router();
 
-route.post('/signup',(req,resp)=>{
+route.post('/signup',validateUserRequest,handler(async (req,resp)=>{
     const controller = new UserController(req,resp);
-    controller.signup(req,resp);
-})
+    await controller.signup(req,resp);
+}))
 
-route.post('/login',(req,resp)=>{
+route.post('/login',validateUserRequest,handler(async (req,resp)=>{
     const controller = new UserController(req,resp);
-    controller.login()
-})
+    await controller.login()
+}))
 
 module.exports = route;

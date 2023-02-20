@@ -1,6 +1,9 @@
 const pool = require('../db_pool');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const UserNotFound = require('../errors/user-not-found');
+const InvalidPassword = require('../errors/password-incorrect');
+const DuplicateUsername = require('../errors/duplicate-username');
 
 const _username = new WeakMap();
 const _password = new WeakMap();
@@ -12,55 +15,42 @@ class User{
         _username.set(this,username);
         _password.set(this,password);
 
-        _executeQuery.set(this,(query)=>{
-            return new Promise(async (resolve,reject)=>{
-                try{
-                    const result = await pool.query(query);
-                    resolve(result);
-                }catch(err){
-                    console.log(err);
-                    reject(err);
-                }
-            })
+        _executeQuery.set(this,async (query)=>{
+            const result = await pool.query(query);
+            return result;
         })
     }
 
-    signup(){
-        return new Promise(async (resolve,reject)=>{
-            const hashed_password = await bcrypt.hash(_password.get(this),10);
-            const query = `INSERT INTO users(username,password) values ('${_username.get(this)}','${hashed_password}') RETURNING *`;
+    async signup(){
+        const checkUserQuery = `SELECT * FROM users where username = '${_username.get(this)}'`;
+        const checkResult = await _executeQuery.get(this)(checkUserQuery);
+        if(checkResult.rows.length>0)
+            throw new DuplicateUsername();
 
-            const result = await _executeQuery.get(this)(query);
-            const user = result.rows[0];
-            const token = this.generateJWT({id : user.id,username : user.username});
-            resolve(token);
-        })
-    }
-
-    login(){
-        return new Promise(async (resolve,reject)=>{
-            try{
-                const query = `SELECT * FROM users where username = '${_username.get(this)}'`;
-                const resultFromQuery = await _executeQuery.get(this)(query);
-
-                if(resultFromQuery.rows.length<1){
-                    reject(new Error('User not found'));
-                    return;
-                }
-
-                const user = resultFromQuery.rows[0];
-                if(!bcrypt.compare(_password.get(this),user.password)){
-                    reject(new Error('Password is incorrect'));
-                    return;
-                }
-
-                const token = this.generateJWT({id : user.id,username : user.username});
-                resolve(token);
-            }catch(err){
-                reject(err)
-            }
+        const hashed_password = await bcrypt.hash(_password.get(this),10);
+        const query = `INSERT INTO users(username,password) values ('${_username.get(this)}','${hashed_password}') RETURNING *`;
             
-        })
+        const result = await _executeQuery.get(this)(query);
+        const user = result.rows[0];
+        const token = this.generateJWT({id : user.id,username : user.username});
+        return token;
+    }
+
+    async login(){
+        const query = `SELECT * FROM users where username = '${_username.get(this)}'`;
+        const result = await _executeQuery.get(this)(query);
+
+        if(result.rows.length<1){
+            throw new UserNotFound();
+        }
+
+        const user = result.rows[0];
+        if(!(await bcrypt.compare(_password.get(this),user.password))){
+            throw new InvalidPassword();
+        }
+
+        const token = this.generateJWT({id : user.id,username : user.username});
+        return token;
     }
 
     generateJWT(payload){
@@ -69,8 +59,6 @@ class User{
             data : payload
         },"privateKey")
     }
-
-
 }
 
 module.exports = User;
