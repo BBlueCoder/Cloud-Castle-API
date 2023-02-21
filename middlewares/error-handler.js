@@ -5,5 +5,6 @@ module.exports = (err,req,resp,next)=>{
         resp.status(err.statusCode).json({"Message":err.message});
         return;
     }
-    resp.status(500).json({"Message":""+err});
+    req.logger.error(err.message,err);
+    resp.status(500).json({"Message":"Something went wrong, please try again"});
 }

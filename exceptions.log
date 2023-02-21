@@ -1,0 +1,108 @@
+{
+  error: Error: Error by me bitches
+      at Object.<anonymous> (C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\index.js:22:7)
+      at Module._compile (node:internal/modules/cjs/loader:1159:14)
+      at Module._extensions..js (node:internal/modules/cjs/loader:1213:10)
+      at Module.load (node:internal/modules/cjs/loader:1037:32)
+      at Module._load (node:internal/modules/cjs/loader:878:12)
+      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+      at node:internal/main/run_main_module:23:47,
+  level: '\x1B[31merror\x1B[39m',
+  message: 'uncaughtException: Error by me bitches\n' +
+    'Error: Error by me bitches\n' +
+    '    at Object.<anonymous> (C:\\Users\\aball\\Documents\\nodeProjets\\NodeApps\\HomeServer\\index.js:22:7)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1159:14)\n' +
+    '    at Module._extensions..js (node:internal/modules/cjs/loader:1213:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1037:32)\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:878:12)\n' +
+    '    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)\n' +
+    '    at node:internal/main/run_main_module:23:47',
+  stack: 'Error: Error by me bitches\n' +
+    '    at Object.<anonymous> (C:\\Users\\aball\\Documents\\nodeProjets\\NodeApps\\HomeServer\\index.js:22:7)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1159:14)\n' +
+    '    at Module._extensions..js (node:internal/modules/cjs/loader:1213:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1037:32)\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:878:12)\n' +
+    '    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)\n' +
+    '    at node:internal/main/run_main_module:23:47',
+  exception: true,
+  date: 'Tue Feb 21 2023 18:48:38 GMT+0100 (GMT+01:00)',
+  process: {
+    pid: 10020,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\aball\\Documents\\nodeProjets\\NodeApps\\HomeServer',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v18.12.1',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\aball\\Documents\\nodeProjets\\NodeApps\\HomeServer\\index.js'
+    ],
+    memoryUsage: {
+      rss: 54804480,
+      heapTotal: 32616448,
+      heapUsed: 17287216,
+      external: 863412,
+      arrayBuffers: 58338
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 282522 },
+  trace: [
+    {
+      column: 7,
+      file: 'C:\\Users\\aball\\Documents\\nodeProjets\\NodeApps\\HomeServer\\index.js',
+      function: null,
+      line: 22,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1159,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._extensions..js',
+      line: 1213,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1037,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._load',
+      line: 878,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/run_main',
+      function: 'Function.executeUserEntryPoint [as runMain]',
+      line: 81,
+      method: 'executeUserEntryPoint [as runMain]',
+      native: false
+    },
+    {
+      column: 47,
+      file: 'node:internal/main/run_main_module',
+      function: null,
+      line: 23,
+      method: null,
+      native: false
+    }
+  ]
+}
