@@ -9,16 +9,12 @@ module.exports = function () {
 
     const logger = createLogger({
         format: combine(
-            label({ label: 'Logging' }),
+            label({ label: 'Console-Log' }),
             timestamp(),
             myFormat
         ),
         transports: [
             new transports.Console({ handleExceptions: true }),
-            new transports.File({ filename: './log/logger.log' })
-        ],
-        exceptionHandlers: [
-            new transports.File({filename: './log/uncaught-exceptions.log'}) 
         ]
     });
 

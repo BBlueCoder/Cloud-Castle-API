@@ -2,6 +2,7 @@ const filesDB = require('../db/files-crud');
 const FileNotFound = require('../errors/file-not-found');
 const Controller = require('./controller');
 const EmptyBody = require('../errors/empty-files-body');
+const { access  } = require('node:fs/promises');
 const fs = require('fs');
 
 const storagePath = './storage';
@@ -9,10 +10,11 @@ const storagePath = './storage';
 class FileController extends Controller {
     constructor(req, resp) {
         super(req, resp);
+        this.userId = req.userId;
     }
 
     async getFiles() {
-        await super.checkResult(filesDB, 'getFiles', 1);
+        await super.checkResult(filesDB, 'getFiles', this.userId);
     }
 
     async addFiles() {
@@ -30,7 +32,7 @@ class FileController extends Controller {
                 fileType: file.mimetype,
                 contentLength: file.size,
                 dateInMillis: Date.now(),
-                fileOwner: 1
+                fileOwner: this.userId
             }
 
             const result = await filesDB.addFile(fileObj);
@@ -42,19 +44,25 @@ class FileController extends Controller {
     }
 
     async getFileData() {
-        const result = await filesDB.getFile(1, this.req.params.fileId);
+        const result = await filesDB.getFile(this.userId, this.req.params.fileId);
         if (result.rows.length < 1)
             throw new FileNotFound();
         this.sendSuccessResponse(result.rows[0]);
     }
 
     async getFile() {
-        const result = await filesDB.getFile(1, this.req.params.fileId);
+        const result = await filesDB.getFile(this.userId, this.req.params.fileId);
         if (result.rows.length < 1)
             throw new FileNotFound();
 
         const fileMetaData = result.rows[0];
-        const filePath = `${storagePath}/${fileMetaData.savedname}`;
+        const filePath = `${storagePath}/${this.userId}/${fileMetaData.savedname}`;
+
+        try{
+            await access(filePath);
+        }catch {
+            throw new FileNotFound();
+        }
 
         this.resp.set({
             "Content-Type": fileMetaData.filetype,
@@ -65,10 +73,10 @@ class FileController extends Controller {
     }
 
     async deleteFile() {
-        const result = await filesDB.getFile(1, this.req.params.fileId);
+        const result = await filesDB.getFile(this.userId, this.req.params.fileId);
         if (result.rows.length < 1)
             throw new FileNotFound();
-        super.checkResult(filesDB, 'removeFile', 1, this.req.params.fileId);
+        super.checkResult(filesDB, 'removeFile', this.userId, this.req.params.fileId);
     }
 
     async deleteFiles() {
@@ -77,7 +85,7 @@ class FileController extends Controller {
 
         for (const file of this.req.body) {
             if (file.id)
-                await filesDB.removeFile(1, file.id);
+                await filesDB.removeFile(this.userId, file.id);
         }
         super.sendSuccessResponse({ "success": "Files had removed successfully" });
     }
