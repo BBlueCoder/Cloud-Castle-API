@@ -1,10 +1,11 @@
 const Pool = require('pg').Pool
+const config = require('config');
 
 const pool = new Pool({
-    user: 'nodeserver',
+    user: config.get('dbConfig.dbUser'),
     host : 'localhost',
-    database : 'home_cloud',
-    password : '031900',
+    database : config.get('dbConfig.dbName'),
+    password : config.get('dbConfig.dbPassword'),
     port : 5432,
 })
 

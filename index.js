@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const errorHandler = require('./middlewares/error-handler');
 require('./startup/create-exceptions-logger')();
 const logger = require('./startup/create-console-logger')();
+require('./startup/check-app-env-variables')();
 
 const app = express();
 

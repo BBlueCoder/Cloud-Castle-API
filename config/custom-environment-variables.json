@@ -1,0 +1,8 @@
+{
+    "jwtPrivateKey":"could_jwtPrivateKey",
+    "dbConfig":{
+        "dbUser":"cloud_dbUser",
+        "dbName":"cloud_dbName",
+        "dbPassword":"cloud_dbPassword"
+    }
+}

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const config = require('config');
 
 module.exports = function(req,resp,next){
     const token = req.headers['authentication'];
@@ -7,7 +8,7 @@ module.exports = function(req,resp,next){
         return
     }
 
-    jwt.verify(token,"privateKey",(err,decoded)=>{
+    jwt.verify(token,config.get('jwtPrivateKey'),(err,decoded)=>{
         if(err){
             let msg = "token is invalid, You must login again to have a new valid token"
             if(err.message.includes("expired")){

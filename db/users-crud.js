@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const UserNotFound = require('../errors/user-not-found');
 const InvalidPassword = require('../errors/password-incorrect');
 const DuplicateUsername = require('../errors/duplicate-username');
+const config = require('config');
 
 const _username = new WeakMap();
 const _password = new WeakMap();
@@ -57,7 +58,7 @@ class User{
         return jwt.sign({
             exp: Math.floor(Date.now() / 1000) + (60 * 35),
             data : payload
-        },"privateKey")
+        },config.get('jwtPrivateKey'))
     }
 }
 

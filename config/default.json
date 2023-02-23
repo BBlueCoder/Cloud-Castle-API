@@ -1,0 +1,8 @@
+{
+    "jwtPrivateKey":"",
+    "dbConfig":{
+        "dbUser":"",
+        "dbName":"",
+        "dbPassword":""
+    }
+}
