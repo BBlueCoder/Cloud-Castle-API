@@ -1,6 +1,7 @@
 const fileRouter = require('./routes/files-routes');
 const userRouter = require('./routes/users-routes');
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const errorHandler = require('./middlewares/error-handler');
 require('./startup/create-exceptions-logger')();
@@ -9,6 +10,9 @@ require('./startup/check-app-env-variables')();
 
 const app = express();
 
+app.use(cors({
+    origin: '*'
+}));
 app.use(bodyParser.json());
 app.use('/api/files', fileRouter);
 app.use('/api/users', userRouter);

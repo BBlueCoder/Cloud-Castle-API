@@ -2,8 +2,13 @@ const filesDB = require('../db/files-crud');
 const FileNotFound = require('../errors/file-not-found');
 const Controller = require('./controller');
 const EmptyBody = require('../errors/empty-files-body');
-const { access  } = require('node:fs/promises');
+const NoThumbnail = require('../errors/no-thumbnail');
+const { access,stat } = require('node:fs/promises');
 const fs = require('fs');
+const generateThumbnail = require('../utils/video-thumbnail-generator');
+
+const _getFileFromDB = new WeakMap();
+const _getStaticFilePath = new WeakMap();
 
 const storagePath = './storage';
 
@@ -11,6 +16,25 @@ class FileController extends Controller {
     constructor(req, resp) {
         super(req, resp);
         this.userId = req.userId;
+
+        _getFileFromDB.set(this, async (userId, fileId) => {
+            const result = await filesDB.getFile(userId, fileId);
+            if (result.rows.length < 1)
+                throw new FileNotFound();
+            return result;
+        })
+
+        _getStaticFilePath.set(this, async (userId, savedname) => {
+            const filePath = `${storagePath}/${userId}/${savedname}`;
+
+            try {
+                await access(filePath);
+            } catch {
+                throw new FileNotFound();
+            }
+
+            return filePath;
+        })
     }
 
     async getFiles() {
@@ -44,25 +68,15 @@ class FileController extends Controller {
     }
 
     async getFileData() {
-        const result = await filesDB.getFile(this.userId, this.req.params.fileId);
-        if (result.rows.length < 1)
-            throw new FileNotFound();
+        const result = await _getFileFromDB.get(this)(this.userId, this.req.params.fileId);
         this.sendSuccessResponse(result.rows[0]);
     }
 
     async getFile() {
-        const result = await filesDB.getFile(this.userId, this.req.params.fileId);
-        if (result.rows.length < 1)
-            throw new FileNotFound();
+        const result = await _getFileFromDB.get(this)(this.userId, this.req.params.fileId);
 
         const fileMetaData = result.rows[0];
-        const filePath = `${storagePath}/${this.userId}/${fileMetaData.savedname}`;
-
-        try{
-            await access(filePath);
-        }catch {
-            throw new FileNotFound();
-        }
+        const filePath = await _getStaticFilePath.get(this)(this.userId, fileMetaData.savedname);
 
         this.resp.set({
             "Content-Type": fileMetaData.filetype,
@@ -70,6 +84,36 @@ class FileController extends Controller {
         });
 
         fs.createReadStream(filePath).pipe(this.resp);
+    }
+
+    async getThumbnail() {
+        const result = await _getFileFromDB.get(this)(this.userId, this.req.params.fileId);
+        const fileMetaData = result.rows[0];
+
+        if (!fileMetaData.filetype.includes("image") && !fileMetaData.filetype.includes("video"))
+            throw new NoThumbnail("File doesn't have a thumbnail");
+
+        if (fileMetaData.filetype.includes("image")) {
+            const filePath = await _getStaticFilePath.get(this)(this.userId, fileMetaData.savedname);
+
+            this.resp.set({
+                "Content-Type": fileMetaData.filetype,
+                "Content-Length": fileMetaData.contentlength
+            });
+
+            fs.createReadStream(filePath).pipe(this.resp);
+            return;
+        }
+
+        const thumbnail = await generateThumbnail(this.userId, fileMetaData.savedname);
+        const stats = await stat(thumbnail);
+
+        this.resp.set({
+            "Content-Type": "image/jpeg",
+            "Content-Length": stats.size
+        });
+
+        fs.createReadStream(thumbnail).pipe(this.resp);
     }
 
     async deleteFile() {

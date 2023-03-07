@@ -23,6 +23,11 @@ route.get('/', auth, handler(async (req, resp) => {
     await fileController.getFiles();
 }))
 
+route.get('/thumbnail/:fileId', auth, handler(async (req, resp) => {
+    const fileController = new FileController(req, resp);
+    await fileController.getThumbnail();
+}))
+
 route.post('/', auth, upload, handler(async (req, resp) => {
     const fileController = new FileController(req, resp);
     await fileController.addFiles();
