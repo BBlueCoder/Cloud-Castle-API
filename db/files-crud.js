@@ -11,8 +11,10 @@ exports.getFiles = (userId) => {
 }
 
 exports.addFile = (file) => {
-    let query = `INSERT INTO files(originname,savedname,filetype,contentlength,dateinmillis,fileowner)`;
-    query = `${query} values ('${file.originName}','${file.savedName}','${file.fileType}',${file.contentLength},${file.dateInMillis},${file.fileOwner})`;
+    let query = `INSERT INTO files(originname,savedname,filetype,contentlength,dateinmillis,duration,fileowner)`;
+    query = `${query} values 
+    ('${file.originName}','${file.savedName}','${file.fileType}',
+    ${file.contentLength},${file.dateInMillis},${file.duration},${file.fileOwner})`;
     query = `${query} RETURNING *`;
     return executeQuery(query);
 }

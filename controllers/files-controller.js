@@ -6,6 +6,7 @@ const NoThumbnail = require('../errors/no-thumbnail');
 const { access,stat } = require('node:fs/promises');
 const fs = require('fs');
 const generateThumbnail = require('../utils/video-thumbnail-generator');
+const getDuration = require('../utils/audio-video-duration');
 
 const _getFileFromDB = new WeakMap();
 const _getStaticFilePath = new WeakMap();
@@ -50,12 +51,22 @@ class FileController extends Controller {
 
         for (const file of this.req.files) {
 
+            let duration = 0;
+            if(file.mimetype.includes('video') || file.mimetype.includes('audio')){
+                try{
+                    duration = await getDuration(file.path);
+                }catch{}
+            }else{
+                duration = null;
+            }
+
             const fileObj = {
                 originName: file.originalname,
                 savedName: file.filename,
                 fileType: file.mimetype,
                 contentLength: file.size,
                 dateInMillis: Date.now(),
+                duration: duration,
                 fileOwner: this.userId
             }
 

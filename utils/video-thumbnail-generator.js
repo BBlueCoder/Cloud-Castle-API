@@ -1,4 +1,4 @@
-const {exec} = require('child_process');
+const executeCommand = require('./shell-runtime');
 const { access,mkdir } = require('node:fs/promises');
 const _path = require('path');
 
@@ -43,23 +43,6 @@ async function isThumbnailExist(path){
     }catch{
         return false;
     }
-}
-
-function executeCommand(command){
-    return new Promise((resolve,reject)=>{
-        exec(command,(error,stdout,stderr)=>{
-            if(error){
-                console.log(error);
-                reject(new Error(error.message));
-                return;
-            }
-            console.log(`stdout :${stdout}`);
-            console.log(`stderr :${stderr}`);
-            if(stderr){
-                resolve(stderr);
-            }
-        })
-    })
 }
 
 module.exports = generateThumbnail;
