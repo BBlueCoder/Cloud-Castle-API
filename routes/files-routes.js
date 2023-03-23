@@ -3,6 +3,7 @@ const FileController = require('../controllers/files-controller');
 const handler = require('../middlewares/handler');
 const auth = require('../middlewares/authentificate-user');
 const upload = require('../middlewares/multer-upload');
+const validateQueryParams = require('../middlewares/validate-get-pagging-req');
 
 const route = express.Router();
 
@@ -18,7 +19,7 @@ route.get('/:fileId', auth, handler(async (res, resp) => {
     await fileController.getFile();
 }))
 
-route.get('/', auth, handler(async (req, resp) => {
+route.get('/', auth,validateQueryParams, handler(async (req, resp) => {
     const fileController = new FileController(req, resp);
     await fileController.getFiles();
 }))

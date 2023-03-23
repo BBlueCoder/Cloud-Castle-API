@@ -3,10 +3,11 @@ const FileNotFound = require('../errors/file-not-found');
 const Controller = require('./controller');
 const EmptyBody = require('../errors/empty-files-body');
 const NoThumbnail = require('../errors/no-thumbnail');
-const { access,stat } = require('node:fs/promises');
+const { access, stat } = require('node:fs/promises');
 const fs = require('fs');
 const generateThumbnail = require('../utils/video-thumbnail-generator');
 const getDuration = require('../utils/audio-video-duration');
+const { off } = require('node:process');
 
 const _getFileFromDB = new WeakMap();
 const _getStaticFilePath = new WeakMap();
@@ -39,7 +40,13 @@ class FileController extends Controller {
     }
 
     async getFiles() {
-        await super.checkResult(filesDB, 'getFiles', this.userId);
+        const { limit, offset, sort_order,file_type } = this.req.query;
+        if (limit && offset) {
+            await super.checkResult(filesDB, 'getFilesWithPaging', this.userId, limit, 
+            offset, sort_order,typeof file_type === 'undefined' ? '' : file_type);
+        } else
+            await super.checkResult(filesDB, 'getFiles', this.userId,
+            typeof file_type === 'undefined' ? '' : file_type);
     }
 
     async addFiles() {
@@ -52,11 +59,11 @@ class FileController extends Controller {
         for (const file of this.req.files) {
 
             let duration = 0;
-            if(file.mimetype.includes('video') || file.mimetype.includes('audio')){
-                try{
+            if (file.mimetype.includes('video') || file.mimetype.includes('audio')) {
+                try {
                     duration = await getDuration(file.path);
-                }catch{}
-            }else{
+                } catch { }
+            } else {
                 duration = null;
             }
 
