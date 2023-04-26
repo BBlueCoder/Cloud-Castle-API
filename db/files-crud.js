@@ -17,7 +17,7 @@ function filterQuery(query,filetype){
 }
 
 exports.getFiles = (userId, filetype = '') => {
-    let query = `SELECT * 
+    let query = `SELECT id,originname,savedname,filetype,contentlength,dateinmillis,duration
         FROM files 
         WHERE fileowner = ${userId} `;
     query = `${filterQuery(query,filetype)} ORDER BY dateinmillis desc`;

@@ -59,10 +59,13 @@ class FileController extends Controller {
         for (const file of this.req.files) {
 
             let duration = 0;
+            
             if (file.mimetype.includes('video') || file.mimetype.includes('audio')) {
                 try {
                     duration = await getDuration(file.path);
-                } catch { }
+                } catch { 
+                    duration = null;
+                }
             } else {
                 duration = null;
             }

@@ -13,7 +13,7 @@ const generateThumbnail = async (userId,videoName)=>{
 
     const filePath = `${getRoot()}\\storage\\${userId}\\${videoName}`;
 
-    const command = `ffmpeg -hide_banner -i ${filePath} -ss 00:00:01 -vframes 1 ${thumbnailPath}`;
+    const command = `ffmpeg -hide_banner -i "${filePath}" -ss 00:00:01 -vframes 1 "${thumbnailPath}"`;
 
     await executeCommand(command);
 

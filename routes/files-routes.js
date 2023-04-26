@@ -14,8 +14,10 @@ route.get('/metadata/:fileId', auth, handler(async (req, resp) => {
     await fileController.getFileData();
 }))
 
-route.get('/:fileId', auth, handler(async (res, resp) => {
-    const fileController = new FileController(res, resp);
+route.get('/:fileId', handler(async (req, resp) => {
+    console.log(req.headers);
+    req.userId = 3;
+    const fileController = new FileController(req, resp);
     await fileController.getFile();
 }))
 
