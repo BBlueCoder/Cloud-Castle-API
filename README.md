@@ -1,5 +1,5 @@
 # Cloud-Castle-API
-A REST-API that stores and retrieves data from a Postgress database. Built using `Express.js` framework.
+A REST-API that stores files on server and save its data on a Postgress database. Built using `Express.js` framework.
 
 
 ## API Reference
