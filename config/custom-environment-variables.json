@@ -4,5 +4,6 @@
         "dbUser":"cloud_dbUser",
         "dbName":"cloud_dbName",
         "dbPassword":"cloud_dbPassword"
-    }
+    },
+    "storagePath":"cloud_storagePath"
 }

@@ -12,12 +12,13 @@ module.exports = function(req,resp,next){
         if(err){
             let msg = "token is invalid, You must login again to have a new valid token"
             if(err.message.includes("expired")){
-                msg = "token expired, You must login again to have a new valid token";
+                msg = "token is expired, You must login again to have a new valid token";
             }
-
+            
             resp.status(401).json({"Message":msg});
             return
         }
+
         req.userId = decoded.data.id;
         next();
     })

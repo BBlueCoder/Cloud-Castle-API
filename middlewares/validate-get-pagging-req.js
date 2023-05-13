@@ -14,6 +14,6 @@ module.exports = function (req, resp, next) {
             req.query.sort_order = 'desc';
         }
     }
-
+    
     next();
 }

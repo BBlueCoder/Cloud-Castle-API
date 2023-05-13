@@ -12,8 +12,6 @@ const { off } = require('node:process');
 const _getFileFromDB = new WeakMap();
 const _getStaticFilePath = new WeakMap();
 
-const storagePath = './storage';
-
 class FileController extends Controller {
     constructor(req, resp) {
         super(req, resp);
@@ -27,6 +25,7 @@ class FileController extends Controller {
         })
 
         _getStaticFilePath.set(this, async (userId, savedname) => {
+            const storagePath = config.get("storagePath");
             const filePath = `${storagePath}/${userId}/${savedname}`;
 
             try {

@@ -1,11 +1,13 @@
 const multer = require('multer');
 const path = require('path');
+const config = require('config');
 const { access, mkdir  } = require('node:fs/promises');
-
-const storagePath = './storage';
 
 const storage = multer.diskStorage({
     destination: async (req, file, cb) => {
+        
+        const storagePath = config.get("storagePath");
+        
         const path = `${storagePath}/${req.userId}`;
         try{
             await access(path);
