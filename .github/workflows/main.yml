@@ -32,14 +32,12 @@ jobs:
       - name: Install Dependencies
         run: npm ci
         
-      - name: Install FFmpeg and FFprobe
+      - name: Install FFmpeg
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
         
       - name: Start PostgreSQL Server
-        env:
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: |
           sudo /etc/init.d/postgresql start
           sudo service postgresql start
@@ -55,3 +53,10 @@ jobs:
         with:
           name: test_coverage
           path: coverage
+
+      - name: Check Test Results
+        run: |
+          if [ ${{ job.status }} == 'failure' ]; then
+            echo "Tests failed. Ignoring push request."
+            exit 1
+          fi
