@@ -28,6 +28,11 @@ jobs:
       - name: Install Dependencies
         run: npm ci
         
+      - name: Start PostgreSQL Server
+        run: |
+          sudo /etc/init.d/postgresql start
+          sudo service postgresql start
+        
       - name: Run Database Setup Script
         run: bash ${{ github.workspace }}/setup-test-db.sh
         
