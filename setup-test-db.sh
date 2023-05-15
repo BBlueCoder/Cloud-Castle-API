@@ -1,9 +1,11 @@
-export PGPASSWORD="testpassword"
+superuser="postgres"
+superuser_password=${POSTGRES_PASSWORD}
 
+echo "super user password = $superuser_password"
 echo "creating role..."
 
-psql -U postgres -d postgres -c "CREATE ROLE testuser WITH LOGIN PASSWORD 'testpassword'"
-psql -U postgres -d postgres -c "ALTER ROLE testuser CREATEDB"
+psql -U "$superuser" -d postgres -c "CREATE ROLE testuser WITH LOGIN PASSWORD 'testpassword'"
+psql -U "$superuser" -d postgres -c "ALTER ROLE testuser CREATEDB"
 
 echo "creating test db..."
 
