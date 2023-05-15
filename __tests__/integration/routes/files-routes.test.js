@@ -34,7 +34,6 @@ describe('/api/files', () => {
         //removing storage contents
         try {
             await fs.rm(storagePath, { recursive: true });
-            await fs.mkdir(storagePath);
         } catch (error) {
             console.log(error);
         }
