@@ -15,7 +15,6 @@ module.exports = function(req,resp,next){
                 msg = "token is expired, You must login again to have a new valid token";
             }
             
-            //test error
             resp.status(400).json({"Message":msg});
             return
         }
