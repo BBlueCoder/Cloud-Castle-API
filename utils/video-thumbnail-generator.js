@@ -1,6 +1,9 @@
 const executeCommand = require('./shell-runtime');
 const { access,mkdir } = require('node:fs/promises');
 const _path = require('path');
+const config = require('config');
+
+const storagePath = config.get('storagePath');
 
 const generateThumbnail = async (userId,videoName)=>{
     const dirPath = await getThumbnailDir(userId);
@@ -11,7 +14,7 @@ const generateThumbnail = async (userId,videoName)=>{
     if(await isThumbnailExist(thumbnailPath))
         return thumbnailPath;
 
-    const filePath = `${getRoot()}\\storage\\${userId}\\${videoName}`;
+    const filePath = `${storagePath}/${userId}/${videoName}`;
 
     const command = `ffmpeg -hide_banner -i "${filePath}" -ss 00:00:01 -vframes 1 "${thumbnailPath}"`;
 
@@ -26,7 +29,7 @@ function getRoot(){
 }
 
 async function getThumbnailDir(userId){
-    const path = `${getRoot()}\\storage\\${userId}\\thumbnails`
+    const path = `${storagePath}/${userId}/thumbnails`
 
     try{
         await access(path);

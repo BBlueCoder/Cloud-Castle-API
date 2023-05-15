@@ -5,5 +5,5 @@
         "dbName":"home_cloud_test",
         "dbPassword":"testpassword"
     },
-    "storagePath":""
+    "storagePath":"./storage-test"
 }

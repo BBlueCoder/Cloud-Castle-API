@@ -1,16 +1,12 @@
 const request = require('supertest');
 const User = require('../../../db/users-crud');
 const pool = require('../../../db-pool');
-let server;
+ 
 
 describe('/api/users',()=>{
 
     const testUser = new User("testuser","testpassword");
     let userBody;
-
-    afterAll( async () => {
-        await pool.end();
-    })
 
     beforeEach(()=>{
         server = require('../../../index');
@@ -23,6 +19,10 @@ describe('/api/users',()=>{
     afterEach( async () => {
         await testUser.deleteUser();
         await server.close();
+    })
+
+    afterAll( async () => {
+        await pool.end();
     })
 
     describe('signup',()=>{

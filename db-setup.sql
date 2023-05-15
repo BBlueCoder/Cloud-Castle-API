@@ -13,5 +13,5 @@ CREATE TABLE files (
 	dateinmillis bigint,
 	fileowner int,
 	duration double precision,
-	constraint fk_fileowner foreign key (fileowner) references users(id)
+	constraint fk_fileowner foreign key (fileowner) references users(id) ON DELETE CASCADE
 )

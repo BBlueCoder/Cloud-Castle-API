@@ -8,6 +8,7 @@ const fs = require('fs');
 const generateThumbnail = require('../utils/video-thumbnail-generator');
 const getDuration = require('../utils/audio-video-duration');
 const { off } = require('node:process');
+const config = require('config');
 
 const _getFileFromDB = new WeakMap();
 const _getStaticFilePath = new WeakMap();
@@ -19,15 +20,16 @@ class FileController extends Controller {
 
         _getFileFromDB.set(this, async (userId, fileId) => {
             const result = await filesDB.getFile(userId, fileId);
-            if (result.rows.length < 1)
+            if (result.rows.length < 1){
                 throw new FileNotFound();
+            }
             return result;
         })
 
         _getStaticFilePath.set(this, async (userId, savedname) => {
             const storagePath = config.get("storagePath");
             const filePath = `${storagePath}/${userId}/${savedname}`;
-
+            
             try {
                 await access(filePath);
             } catch {
@@ -53,7 +55,7 @@ class FileController extends Controller {
         const addedFiles = [];
 
         if (!this.req.files)
-            throw new EmptyBody("No files found, please make sure to name the field files");
+            throw new EmptyBody("No files found, please make sure to send files with naming the field 'files'");
 
         for (const file of this.req.files) {
 
