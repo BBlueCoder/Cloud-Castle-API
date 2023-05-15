@@ -1,5 +1,5 @@
 superuser="postgres"
-superuser_password=${POSTGRES_PASSWORD}
+superuser_password=${POSTGRES_PASSWORD:"testpassword"}
 
 echo "super user password = $superuser_password"
 echo "creating role..."
