@@ -29,6 +29,8 @@ jobs:
         run: npm ci
         
       - name: Start PostgreSQL Server
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: |
           sudo /etc/init.d/postgresql start
           sudo service postgresql start
