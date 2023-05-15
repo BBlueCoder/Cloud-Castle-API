@@ -1,9 +1,6 @@
 superuser="postgres"
 superuser_password="testpassword"
 
-
-export PGHOST=/var/run/postgresql
-export PGUSER="$superuser"
 export PGPASSWORD="$superuser_password"
 
 echo "super user password = $superuser_password"
