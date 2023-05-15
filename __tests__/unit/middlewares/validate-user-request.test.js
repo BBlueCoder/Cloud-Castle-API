@@ -17,7 +17,7 @@ describe('validate user request middleware', () => {
     it('should return an error if username field is missing', () => {
         validateUser(req, resp, next);
 
-        const error = resp.json.mock.calls[0][0].Error;
+        const error = resp.json.mock.calls[0][0].Message;
 
         expect(resp.status).toHaveBeenCalledWith(400);
         expect(error).toMatch(/Username/);
@@ -28,7 +28,7 @@ describe('validate user request middleware', () => {
 
         validateUser(req, resp, next);
 
-        const error = resp.json.mock.calls[0][0].Error;
+        const error = resp.json.mock.calls[0][0].Message;
 
         expect(resp.status).toHaveBeenCalledWith(400);
         expect(error).toMatch(/Password/);

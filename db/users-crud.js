@@ -17,9 +17,19 @@ class User{
         _password.set(this,password);
 
         _executeQuery.set(this,async (query)=>{
-            const result = await pool.query(query);
+            const client = await pool.connect();
+            const result = await client.query(query);
+            client.release();
             return result;
         })
+    }
+
+    get username(){
+        return _username.get(this);
+    }
+
+    get password(){
+        return _password.get(this);
     }
 
     async signup(){
@@ -53,6 +63,12 @@ class User{
         const token = this.generateJWT({id : user.id,username : user.username});
         return token;
     }
+
+    async deleteUser(){
+        const query = `DELETE FROM users where username = '${_username.get(this)}'`;
+        await _executeQuery.get(this)(query);
+    }
+
 
     generateJWT(payload){
         return jwt.sign({

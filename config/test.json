@@ -1,9 +1,9 @@
 {
     "jwtPrivateKey":"privateKey",
     "dbConfig":{
-        "dbUser":"testUser",
-        "dbName":"",
-        "dbPassword":""
+        "dbUser":"testuser",
+        "dbName":"home_cloud_test",
+        "dbPassword":"testpassword"
     },
     "storagePath":""
 }
