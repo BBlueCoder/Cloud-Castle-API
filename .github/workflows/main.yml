@@ -4,7 +4,8 @@ on:
     branches: [master]
     
 jobs:
-  test:
+  tests:
+    name: run-all-tests
     runs-on: ubuntu-latest
     
     services:
@@ -27,7 +28,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.5.2  
         with:
-          node-version: 18
+          node-version: 18.x
         
       - name: Install Dependencies
         run: npm ci
@@ -53,10 +54,3 @@ jobs:
         with:
           name: test_coverage
           path: coverage
-
-      - name: Check Test Results
-        run: |
-          if [ ${{ job.status }} == 'failure' ]; then
-            echo "Tests failed. Ignoring push request."
-            exit 1
-          fi
