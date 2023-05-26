@@ -1,7 +1,7 @@
 const request = require('supertest');
 const User = require('../../../db/users-crud');
 const pool = require('../../../db-pool');
- 
+const redisAPI = require('../../../utils/redis-api');
 
 describe('/api/users',()=>{
 
@@ -19,6 +19,7 @@ describe('/api/users',()=>{
     afterEach( async () => {
         await testUser.deleteUser();
         await server.close();
+        await redisAPI.clearAll();
     })
 
     afterAll( async () => {
