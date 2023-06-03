@@ -3,6 +3,7 @@ const User = require('../../../db/users-crud');
 const config = require('config');
 const pool = require('../../../db-pool');
 const fs = require('fs').promises;
+const redisAPI = require('../../../utils/redis-api');
 
 describe('/api/files', () => {
    
@@ -25,6 +26,7 @@ describe('/api/files', () => {
 
     afterEach(async () => {
         await server.close();
+        await redisAPI.clearAll();
     })
 
     afterAll(async () => {

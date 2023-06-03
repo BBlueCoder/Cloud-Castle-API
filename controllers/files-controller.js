@@ -9,6 +9,7 @@ const generateThumbnail = require('../utils/video-thumbnail-generator');
 const getDuration = require('../utils/audio-video-duration');
 const { off } = require('node:process');
 const config = require('config');
+const redisAPI = require('../utils/redis-api');
 
 const _getFileFromDB = new WeakMap();
 const _getStaticFilePath = new WeakMap();
@@ -19,9 +20,17 @@ class FileController extends Controller {
         this.userId = req.userId;
 
         _getFileFromDB.set(this, async (userId, fileId) => {
-            const result = await filesDB.getFile(userId, fileId);
-            if (result.rows.length < 1){
-                throw new FileNotFound();
+            const key = `files-metadata-${userId}-${fileId}`
+            const resultFromCache = await redisAPI.get(key);
+            let result = { rows: [] };
+            if (!resultFromCache) {
+                result = await filesDB.getFile(userId, fileId);
+                if (result.rows.length < 1) {
+                    throw new FileNotFound();
+                }
+                await redisAPI.add(key, result.rows[0], 60 * 10);
+            } else {
+                result.rows.push(resultFromCache);
             }
             return result;
         })
@@ -29,7 +38,7 @@ class FileController extends Controller {
         _getStaticFilePath.set(this, async (userId, savedname) => {
             const storagePath = config.get("storagePath");
             const filePath = `${storagePath}/${userId}/${savedname}`;
-            
+
             try {
                 await access(filePath);
             } catch {
@@ -41,13 +50,14 @@ class FileController extends Controller {
     }
 
     async getFiles() {
-        const { limit, offset, sort_order,file_type } = this.req.query;
+        const { limit, offset, sort_order, file_type } = this.req.query;
         if (limit && offset) {
-            await super.checkResult(filesDB, 'getFilesWithPaging', this.userId, limit, 
-            offset, sort_order,typeof file_type === 'undefined' ? '' : file_type);
-        } else
-            await super.checkResult(filesDB, 'getFiles', this.userId,
-            typeof file_type === 'undefined' ? '' : file_type);
+            await super.checkResult(filesDB, 'getFilesWithPaging', this.userId, limit,
+                offset, sort_order, typeof file_type === 'undefined' ? '' : file_type);
+        } else {
+            await super.checkResult(filesDB, 'getFiles', this.userId, sort_order,
+                typeof file_type === 'undefined' ? '' : file_type);
+        }
     }
 
     async addFiles() {
@@ -60,11 +70,11 @@ class FileController extends Controller {
         for (const file of this.req.files) {
 
             let duration = 0;
-            
+
             if (file.mimetype.includes('video') || file.mimetype.includes('audio')) {
                 try {
                     duration = await getDuration(file.path);
-                } catch { 
+                } catch {
                     duration = null;
                 }
             } else {
@@ -139,20 +149,31 @@ class FileController extends Controller {
     }
 
     async deleteFile() {
-        const result = await filesDB.getFile(this.userId, this.req.params.fileId);
+        const fileId = this.req.params.fileId
+        const result = await _getFileFromDB.get(this)(this.userId, fileId);
         if (result.rows.length < 1)
             throw new FileNotFound();
-        super.checkResult(filesDB, 'removeFile', this.userId, this.req.params.fileId);
+        await redisAPI.remove(`files-metadata-${fileId}`);
+        super.checkResult(filesDB, 'removeFile', this.userId, fileId);
     }
 
     async deleteFiles() {
         if (!this.req.body[0])
             throw new EmptyBody("No files found, please make sure to send a json body that contains ids of files");
 
+        const removedFiles = [];
+        const key = `files-removed-${this.userId}`;
+        const cacheRemovedFiles = await redisAPI.get(key);
+        if(cacheRemovedFiles)
+            removedFiles.push(cacheRemovedFiles);
+
         for (const file of this.req.body) {
-            if (file.id)
+            if (file.id) {
+                removedFiles.push(file.id);
                 await filesDB.removeFile(this.userId, file.id);
+            }
         }
+        await redisAPI.add(key, removedFiles, 60 * 5);
         super.sendSuccessResponse({ "success": "Files had removed successfully" });
     }
 }
