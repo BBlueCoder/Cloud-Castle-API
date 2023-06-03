@@ -16,11 +16,11 @@ function filterQuery(query,filetype){
     return query;
 }
 
-exports.getFiles = (userId, filetype = '') => {
+exports.getFiles = (userId, sort_order,filetype = '') => {
     let query = `SELECT id,originname,savedname,filetype,contentlength,dateinmillis,duration
         FROM files 
         WHERE fileowner = ${userId} `;
-    query = `${filterQuery(query,filetype)} ORDER BY dateinmillis desc`;
+    query = `${filterQuery(query,filetype)} ORDER BY dateinmillis ${sort_order}`;
     return executeQuery(query);
 }
 

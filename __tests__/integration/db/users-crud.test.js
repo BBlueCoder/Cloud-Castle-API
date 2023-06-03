@@ -48,7 +48,6 @@ describe('users crud test cache', ()=>{
         })
 
         redisAPI.add.mockImplementation(async (key) => {
-            console.log("redis add called");
             return "OK";
         })
 
@@ -84,6 +83,5 @@ describe('users crud test cache', ()=>{
         await testUser.deleteUser();
 
         expect(redisAPI.remove).toHaveBeenCalled();
-        
     })
 })
