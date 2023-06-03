@@ -24,11 +24,6 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-      
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
     
     steps:
       - name: Checkout the code
@@ -55,8 +50,13 @@ jobs:
       - name: Run Database Setup Script
         run: bash ${{ github.workspace }}/setup-test-db.sh
         
-      - name: Start Redis Server
-        run: docker run -d -p 6379:6379 redis
+      - name: Install and Start Redis Server
+        run: |
+          curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+          sudo apt-get update
+          sudo apt-get install redis
+          redis-server --daemonize yes
         
       - name: Run Tests
         run: npm test
