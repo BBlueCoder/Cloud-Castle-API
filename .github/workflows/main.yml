@@ -55,8 +55,11 @@ jobs:
       - name: Run Database Setup Script
         run: bash ${{ github.workspace }}/setup-test-db.sh
         
-      - name: Start redis server
-        run: redis-server --daemonize yes
+      - name: Install and Start Redis
+        run: |
+          npm install redis
+          npm install -g pm2
+          pm2 start redis-server -- --daemonize yes
         
       - name: Run Tests
         run: npm test
