@@ -7,6 +7,7 @@ describe('/api/users',()=>{
 
     const testUser = new User("testuser","testpassword");
     let userBody;
+    let server;
 
     beforeEach(()=>{
         server = require('../../../index');

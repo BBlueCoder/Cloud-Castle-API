@@ -7,6 +7,7 @@ const errorHandler = require('./middlewares/error-handler');
 require('./startup/create-exceptions-logger')();
 const logger = require('./startup/create-console-logger')();
 require('./startup/check-app-env-variables')();
+const getHostIPv4 = require('./utils/get-host-ip');
 
 const app = express();
 
@@ -14,6 +15,11 @@ app.use(cors({
     origin: '*'
 }));
 app.use(bodyParser.json());
+
+app.get('/api/health',(req,resp)=>{
+    resp.send(`Server is healthy, host from ${getHostIPv4()}`);
+})
+
 app.use('/api/files', fileRouter);
 app.use('/api/users', userRouter);
 app.use(errorHandler);
