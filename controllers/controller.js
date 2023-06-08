@@ -19,16 +19,6 @@ class Controller {
 
             const key = `files-paging-${args[0]}-${args[3]}-${args[1]}-${args[2]}-${args[4]}`;
             await this.getFilesFromCacheORDB(result,obj,method,key,args);
-            // const resultFromCache = await redisAPI.get(key);
-
-            // if (!resultFromCache) {
-            //     result = await obj[method](...args);
-            //     if (result.rows.length > 0) {
-            //         await redisAPI.add(key, result.rows, 60 * 5);
-            //     }
-            // } else {
-            //     result.rows.push(resultFromCache);
-            // }
 
         } else {
             result = await obj[method](...args);
