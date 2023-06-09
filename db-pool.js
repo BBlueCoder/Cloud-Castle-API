@@ -3,10 +3,10 @@ const config = require('config');
 
 const pool = new Pool({
     user: config.get('dbConfig.dbUser'),
-    host : 'localhost',
+    host : config.get('dbConfig.dbAdress'),
     database : config.get('dbConfig.dbName'),
     password : config.get('dbConfig.dbPassword'),
-    port : 5432,
+    port : config.get('dbConfig.dbPort'),
     idleTimeoutMillis: 1000,
 })
 

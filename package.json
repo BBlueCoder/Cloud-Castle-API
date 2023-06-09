@@ -4,7 +4,7 @@
   "description": "An Api for my home server",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --coverage"
+    "test": "jest --detectOpenHandles --coverage --no-cache"
   },
   "author": "BBlueCoder",
   "license": "ISC",

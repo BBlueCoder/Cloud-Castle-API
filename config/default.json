@@ -3,7 +3,12 @@
     "dbConfig":{
         "dbUser":"",
         "dbName":"",
-        "dbPassword":""
+        "dbPassword":"",
+        "dbPort":"",
+        "dbAdress":""
+    },
+    "redisConfig":{
+        "url":""
     },
     "storagePath":""
 }

@@ -1,5 +1,6 @@
 const fileRouter = require('./routes/files-routes');
 const userRouter = require('./routes/users-routes');
+const healthRouter = require('./routes/health-routes');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -7,7 +8,7 @@ const errorHandler = require('./middlewares/error-handler');
 require('./startup/create-exceptions-logger')();
 const logger = require('./startup/create-console-logger')();
 require('./startup/check-app-env-variables')();
-const getHostIPv4 = require('./utils/get-host-ip');
+
 
 const app = express();
 
@@ -16,10 +17,8 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-app.get('/api/health',(req,resp)=>{
-    resp.send(`Server is healthy, host from ${getHostIPv4()}`);
-})
 
+app.use('/api/health', healthRouter)
 app.use('/api/files', fileRouter);
 app.use('/api/users', userRouter);
 app.use(errorHandler);

@@ -12,6 +12,14 @@ async function handler(invoke) {
     }
 }
 
+async function checkConnection() {
+    const client = createClient();
+    await client.connect(client);
+    const isClientReady = client.isReady;
+    await client.disconnect();
+    return isClientReady;
+}
+
 async function add(key, value, expiresInSeconds = null) {
     return await handler(async (client) => {
         const reply = await client.set(key, JSON.stringify(value));
@@ -46,4 +54,4 @@ async function clearAll() {
     })
 }
 
-module.exports = { add, get, remove, clearAll };
+module.exports = { add, get, remove, clearAll, checkConnection };

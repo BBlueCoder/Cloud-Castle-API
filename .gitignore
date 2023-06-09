@@ -2,3 +2,4 @@
 /log
 set-variables.sh
 /coverage
+setup-db.sh
