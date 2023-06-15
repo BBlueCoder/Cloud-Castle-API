@@ -23,14 +23,11 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Install eslint html report
-        run: npm install --save-dev eslint-html-reporter
-
       - name: Run Prettier
         run: npx prettier --write .
 
       - name: Run ESLint
-        run: npx eslint . --fix --no-error-on-exit -f node_modules/eslint-html-reporter/reporter.js -o eslint-report.html
+        run: npx eslint . --fix --no-error-on-status -f node_modules/eslint-html-reporter/reporter.js -o eslint-report.html
         
       - name: Upload lint report
         uses: actions/upload-artifact@v3.1.2
