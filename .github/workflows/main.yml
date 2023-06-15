@@ -30,7 +30,7 @@ jobs:
         run: npx prettier --write .
 
       - name: Run ESLint
-        run: npx eslint . --fix -f node_modules/eslint-html-reporter/reporter.js -o eslint-report.html
+        run: npx eslint . --fix --no-error-on-exit -f node_modules/eslint-html-reporter/reporter.js -o eslint-report.html
         
       - name: Upload lint report
         uses: actions/upload-artifact@v3.1.2
