@@ -1,0 +1,14 @@
+_docker-compose.yml
+.dockerignore
+.eslintrc.json
+.gitignore
+db-setup.sql
+docker-compose.yml
+Dockerfile
+nginx.conf
+package-lock.json
+package.json
+README.md
+set-variables.sh
+setup-db.sh
+setup-test-db.sh

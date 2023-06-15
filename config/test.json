@@ -1,14 +1,14 @@
 {
-    "jwtPrivateKey":"privateKey",
-    "dbConfig":{
-        "dbUser":"testuser",
-        "dbName":"home_cloud_test",
-        "dbPassword":"testpassword",
-        "dbPort":5432,
-        "dbAdress":"localhost"
-    },
-    "redisConfig":{
-        "url":"redis://localhost:6379"
-    },
-    "storagePath":"./storage-test"
+  "jwtPrivateKey": "privateKey",
+  "dbConfig": {
+    "dbUser": "testuser",
+    "dbName": "home_cloud_test",
+    "dbPassword": "testpassword",
+    "dbPort": 5432,
+    "dbAdress": "localhost"
+  },
+  "redisConfig": {
+    "url": "redis://localhost:6379"
+  },
+  "storagePath": "./storage-test"
 }

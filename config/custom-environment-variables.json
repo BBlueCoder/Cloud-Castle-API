@@ -1,14 +1,14 @@
 {
-    "jwtPrivateKey":"cloud_jwtPrivateKey",
-    "dbConfig":{
-        "dbUser":"cloud_dbUser",
-        "dbName":"cloud_dbName",
-        "dbPassword":"cloud_dbPassword",
-        "dbPort":"cloud_dbPort",
-        "dbAdress":"cloud_dbAdress"
-    },
-    "redisConfig":{
-        "url":"cloud_redisURL"
-    },
-    "storagePath":"cloud_storagePath"
+  "jwtPrivateKey": "cloud_jwtPrivateKey",
+  "dbConfig": {
+    "dbUser": "cloud_dbUser",
+    "dbName": "cloud_dbName",
+    "dbPassword": "cloud_dbPassword",
+    "dbPort": "cloud_dbPort",
+    "dbAdress": "cloud_dbAdress"
+  },
+  "redisConfig": {
+    "url": "cloud_redisURL"
+  },
+  "storagePath": "cloud_storagePath"
 }

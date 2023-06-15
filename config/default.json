@@ -1,14 +1,14 @@
 {
-    "jwtPrivateKey":"",
-    "dbConfig":{
-        "dbUser":"",
-        "dbName":"",
-        "dbPassword":"",
-        "dbPort":"",
-        "dbAdress":""
-    },
-    "redisConfig":{
-        "url":""
-    },
-    "storagePath":""
+  "jwtPrivateKey": "",
+  "dbConfig": {
+    "dbUser": "",
+    "dbName": "",
+    "dbPassword": "",
+    "dbPort": "",
+    "dbAdress": ""
+  },
+  "redisConfig": {
+    "url": ""
+  },
+  "storagePath": ""
 }
