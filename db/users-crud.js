@@ -4,10 +4,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const redisAPI = require('../utils/redis-api');
+const Joi = require('joi');
 
 const UserNotFound = require('../errors/user-not-found');
 const InvalidPassword = require('../errors/password-incorrect');
 const DuplicateUsername = require('../errors/duplicate-username');
+const CustomError = require('../errors/custom-error-class');
 
 const _username = new WeakMap();
 const _password = new WeakMap();
@@ -33,6 +35,30 @@ class User {
 
     get password() {
         return _password.get(this);
+    }
+
+    validateUser(){
+        const userSchema = Joi.object(
+            {
+                username : Joi.string() 
+                    .alphanum()
+                    .min(5)
+                    .max(30)
+                    .required(),
+
+                password : Joi.string()
+                    .pattern(new RegExp('^(?=.*[A-Z])(?=.*[@._-])[A-Za-z0-9@._-]+$'))
+                    .min(8)
+                    .max(50)
+                    .required()
+            }
+        )
+        
+        const { error , value } = userSchema.validate({username : _username.get(this),password : _password.get(this)});
+        if(error)
+            throw new CustomError(error,400);
+        
+        return true;
     }
 
     async signup() {

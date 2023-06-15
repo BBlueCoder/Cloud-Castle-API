@@ -21,6 +21,9 @@ app.use(bodyParser.json());
 app.use('/api/health', healthRouter)
 app.use('/api/files', fileRouter);
 app.use('/api/users', userRouter);
+app.use((req,resp,next)=>{
+    resp.status(404).json({"Message":"Invalid Endpoint"});
+})
 app.use(errorHandler);
 
 const server = app.listen(3000);

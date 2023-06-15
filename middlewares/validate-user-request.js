@@ -1,13 +1,12 @@
+const User = require('../db/users-crud');
+
 module.exports = function(req,resp,next){
-    if(!req.body.username){
-        resp.status(400).json({"Message":"Username field is requiered"});
-        return;
+    const user = new User(req.body.username,req.body.password);
+    try{
+        user.validateUser();
+        next();
+    }catch(ex){
+        resp.status(ex.statusCode).json({"Message":ex.message});
     }
 
-    if(!req.body.password){
-        resp.status(400).json({"Message":"Password field is requiered"});
-        return;
-    }
-
-    next();
 }

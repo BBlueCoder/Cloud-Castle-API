@@ -20,7 +20,7 @@ describe('validate user request middleware', () => {
         const error = resp.json.mock.calls[0][0].Message;
 
         expect(resp.status).toHaveBeenCalledWith(400);
-        expect(error).toMatch(/Username/);
+        expect(error).toMatch(/username/);
     });
 
     it('should return an error if password field is missing', () => {
@@ -31,12 +31,12 @@ describe('validate user request middleware', () => {
         const error = resp.json.mock.calls[0][0].Message;
 
         expect(resp.status).toHaveBeenCalledWith(400);
-        expect(error).toMatch(/Password/);
+        expect(error).toMatch(/password/);
     });
 
     it('should call next if both username and password fields are present', () => {
         req.body.username = 'testuser';
-        req.body.password = 'testpassword';
+        req.body.password = 'Test@password';
 
         validateUser(req, resp, next);
 

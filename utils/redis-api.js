@@ -1,8 +1,11 @@
 const { createClient } = require('redis');
+const config = require('config');
 
 async function handler(invoke) {
     try {
-        const client = createClient();
+        const client = createClient({
+            url : config.get('redisConfig.url'),
+        });
         await client.connect(client);
         const result = await invoke(client);
         await client.disconnect();
@@ -13,7 +16,9 @@ async function handler(invoke) {
 }
 
 async function checkConnection() {
-    const client = createClient();
+    const client = createClient({
+        url : config.get('redisConfig.url'),
+    });
     await client.connect(client);
     const isClientReady = client.isReady;
     await client.disconnect();

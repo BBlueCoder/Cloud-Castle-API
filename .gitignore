@@ -3,3 +3,4 @@
 set-variables.sh
 /coverage
 setup-db.sh
+docker-compose.yml

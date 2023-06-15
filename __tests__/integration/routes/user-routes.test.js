@@ -5,7 +5,7 @@ const redisAPI = require('../../../utils/redis-api');
 
 describe('/api/users',()=>{
 
-    const testUser = new User("testuser","testpassword");
+    const testUser = new User("testuser","Test@password");
     let userBody;
     let server;
 
@@ -73,7 +73,7 @@ describe('/api/users',()=>{
         })
 
         it('should return 401 status when password is incorrect',async ()=>{
-            userBody.password = 'invalid';
+            userBody.password = 'Invalid@';
             const resp = await request(server).post('/api/users/login').send(userBody);
 
             expect(resp.status).toBe(401);
