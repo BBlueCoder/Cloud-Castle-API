@@ -1,0 +1,2197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ESLint Results</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+  
+    .eslint-report {
+      font-family: "Helvetica Neue", sans-serif;
+      font-size: 14px;
+      padding: 20px 40px;
+    }
+  
+    .eslint-report h1 {
+      border-bottom: 1px solid #ddd;
+      line-height: 1;
+      padding-bottom: 12px;
+    }
+  
+    .eslint-report h2 {
+      padding-bottom: 9px;
+      line-height: 1;
+      margin-top: 24px;
+      margin-bottom: 9px;
+    }
+  
+    .eslint-report h3 {
+      line-height: 1;
+      margin-top: 0;
+    }
+  
+    .eslint-report a {
+      text-decoration: none;
+    }
+  
+    .eslint-report table {
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+  
+    .toggle-all-link {
+      font-size: 14px;
+    }
+  
+    .report-table {
+      font-size: 14px;
+      min-width: 800px;
+      border: 1px solid #e6e6e6;
+      margin: 10px;
+    }
+  
+    .report-table thead {
+      background-color: #eee;
+    }
+  
+    .report-table th {
+      text-align: left;
+      vertical-align: middle;
+    }
+  
+    .report-table th,
+    .report-table td {
+      padding: 4px 9px;
+      border: 1px solid #ccc;
+    }
+  
+    .report-table td {
+      line-height: 1.5;
+      vertical-align: top;
+    }
+  
+    .report-table .error-col {
+      width: 41px;
+    }
+  
+    .report-table .warning-col {
+      width: 63px;
+    }
+  
+    .report-table .toggle-link {
+      display: block;
+    }
+  
+    .report-table .danger td {
+      background-color: rgba(242, 222, 222, 0.8);
+    }
+  
+    .report-table .danger:hover td {
+      background-color: rgba(242, 222, 222, 1);
+    }
+  
+    .report-table .warning td {
+      background-color: rgba(252, 248, 227, 0.8);
+    }
+  
+    .report-table .warning:hover td {
+      background-color: rgba(252, 248, 227, 1);
+    }
+  
+    .report-table .success td {
+      background-color: rgba(223, 240, 216, 0.8);
+    }
+  
+    .report-table .success:hover td {
+      background-color: rgba(223, 240, 216, 1);
+    }
+  
+    .table-wrapper {
+      display: flex;
+      justify-content: flex-start;
+      width: 600px;
+      align-items: flex-end;
+    }
+  
+    .table-wrapper.occurrences {
+      align-items: flex-start;
+    }
+  
+    .table-wrapper.occurrences .table-column {
+      height: 180px;
+      overflow-y: auto;
+    }
+  
+    .table-column {
+      flex: 1;
+      margin: 10px;
+    }
+  
+    .summary-table {
+      width: 100%;
+    }
+  
+    .summary-table a {
+      display: block;
+    }
+  
+    .summary-table td {
+      padding: 4px 0;
+    }
+  
+    .summary-table td:last-child {
+      text-align: right;
+    }
+  
+    .summary-table tfoot td {
+      border-top: 2px solid #666;
+      font-weight: bold;
+    }
+  
+    .details-row.hidden {
+      display: none;
+    }
+  
+    .details-table {
+      font-size: 12px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+  
+    .details-table td {
+      border: 0;
+      padding: 1px 6px;
+    }
+  
+    .details-table td:first-child {
+      padding-left: 0;
+    }
+  
+    .details-table .location-col {
+      width: 25px;
+    }
+  
+    .details-table .rule-col {
+      white-space: nowrap;
+      width: 100px;
+    }
+  
+    .details-table .rule-col a {
+      display: block;
+    }
+  
+    .details-table .rule-col a:hover {
+      text-decoration: underline;
+    }
+  
+    .details-table .severity-col {
+      width: 45px;
+    }
+  
+    .details-table .msg-danger .severity-col {
+      color: #900;
+    }
+  
+    .details-table .msg-warning .severity-col {
+      color: #f90;
+    }
+  </style>
+
+    <script>
+      // yolo
+      function toggleAllDetails(node) {
+        var rows = document.querySelectorAll("tr.details-row");
+    
+        if (node.innerHTML === "(expand all)") {
+          node.innerHTML = "(collapse all)";
+    
+          for (var x = 0; x < rows.length; x++) {
+            var row = rows[x];
+            row.className = "details-row";
+          }
+        } else {
+          node.innerHTML = "(expand all)";
+    
+          for (var x = 0; x < rows.length; x++) {
+            var row = rows[x];
+            row.className = "details-row hidden";
+          }
+        }
+      }
+    
+      function toggleDetails(node) {
+        var parentRow = node.parentNode.parentNode;
+        var detailsRow = parentRow.nextSibling;
+    
+        if (detailsRow.className === "details-row hidden") {
+          detailsRow.className = "details-row";
+        } else {
+          detailsRow.className = "details-row hidden";
+        }
+      }
+    </script>
+</head>
+<body>
+  <div class="eslint-report">
+    <h1>ESLint Results</h1>
+
+      <h2>Summary</h2>
+      
+      <div class="table-wrapper">
+        <div class="table-column">
+          <table class="summary-table">
+              <tbody>
+                <tr>
+                  <td>Errors</td>
+                  <td>281</td>
+                </tr>
+                <tr>
+                  <td>Warnings</td>
+                  <td>0</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>Total alerts</td>
+                  <td>281</td>
+                </tr>
+              </tfoot>
+          </table>
+        </div>
+        <div class="table-column">
+          <table class="summary-table">
+              <tbody>
+                <tr>
+                  <td>Files with errors</td>
+                  <td>14</td>
+                </tr>
+                <tr>
+                  <td>Files with only warnings</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>Clean files</td>
+                  <td>33</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>Total files linted</td>
+                  <td>47</td>
+                </tr>
+              </tfoot>
+          </table>
+        </div>
+      </div>
+
+        <h2>Most-Common Errors and Warnings</h2>
+        
+        <div class="table-wrapper occurrences">
+          <div class="table-column">
+            <h3>Errors</h3>
+        
+              <table class="summary-table">
+                <tbody>
+                    <tr class="occurrence row-0">
+                        <td><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+                      <td>262</td>
+                    </tr>
+                    <tr class="occurrence row-1">
+                        <td><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+                      <td>19</td>
+                    </tr>
+                </tbody>
+              </table>
+          </div>
+          <div class="table-column">
+            <h3>Warnings</h3>
+        
+              <p>No warnings were found!</p>
+          </div>
+        </div>
+
+      <h2>File Breakdown
+          <a id="toggle" href="javascript:;" onclick="toggleAllDetails(this)" class="toggle-all-link">(expand all)</a></h2>
+      
+      <table class="report-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th class="error-col">Errors</th>
+            <th class="warning-col">Warnings</th>
+          </tr>
+        </thead>
+        <tbody><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\integration\routes\files-routes.test.js</a></td>
+              <td>71</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              8:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              17:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeAll&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              21:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              26:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;afterEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              31:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;afterAll&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              43:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              44:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              47:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              48:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              51:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              56:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              57:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              60:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              67:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              68:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              70:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              71:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              72:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              73:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              74:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              75:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              76:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              85:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              86:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              89:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              90:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              93:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              98:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              99:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              103:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              104:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              109:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              110:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              113:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              118:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              120:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              121:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              122:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              123:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              124:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              125:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              126:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              130:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              131:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              136:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              137:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              140:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              145:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              146:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              150:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              151:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              156:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              157:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              160:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              166:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              167:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              170:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              175:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              176:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              180:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              181:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              186:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              187:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              190:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              195:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              199:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              200:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              205:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              206:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              209:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              220:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\integration\controller\files-controller.test.js</a></td>
+              <td>61</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              1:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              4:7
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;FilesController&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              13:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              24:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeAll&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              49:21
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              50:19
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              56:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              63:32
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expiresInSeconds&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              68:48
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;key&#x27; is defined but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              73:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;afterAll&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              87:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              88:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              91:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              92:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              95:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              96:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              103:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              105:36
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expiresInSeconds&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              114:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              115:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              116:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              120:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              121:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              126:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              127:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              128:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              131:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              133:60
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expiresInSeconds&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              136:60
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expiresInSeconds&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              144:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              145:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              146:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              147:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              148:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              152:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              153:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeAll&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              170:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              174:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              175:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              176:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              179:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              181:60
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expiresInSeconds&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              184:60
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expiresInSeconds&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              192:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              193:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              194:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              195:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              196:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              200:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              201:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              204:55
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;key&#x27; is defined but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              208:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              213:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              214:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              218:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              219:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeAll&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              228:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              233:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              234:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              235:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              236:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\integration\routes\user-routes.test.js</a></td>
+              <td>29</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              6:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              11:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              19:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;afterEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              25:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;afterAll&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              29:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              30:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              32:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              33:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              36:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              38:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              41:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              42:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              45:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              50:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              51:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              57:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              58:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              62:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              64:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              65:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              68:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              74:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              75:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              78:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              84:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              85:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              88:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              93:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              94:13
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\integration\db\users-crud.test.js</a></td>
+              <td>24</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              1:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              2:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              11:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              15:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeAll&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              16:57
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;salt&#x27; is defined but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              20:50
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;data&#x27; is defined but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              20:56
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;encrypted&#x27; is defined but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              33:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              38:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;afterAll&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              44:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              46:32
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expiresInSeconds&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              51:48
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;key&#x27; is defined but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              57:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              58:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              59:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              60:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              67:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              69:32
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expiresInSeconds&#x27; is assigned a value but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              74:48
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;key&#x27; is defined but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              81:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              82:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              85:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              86:51
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;key&#x27; is defined but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              92:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\unit\utils\redis-api.test.js</a></td>
+              <td>19</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              3:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              13:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              22:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;afterEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              26:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              29:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              32:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              34:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              37:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              44:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              45:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              48:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              50:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              53:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              56:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              59:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              61:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              64:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              67:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              68:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\unit\middlewares\authentificate-user.test.js</a></td>
+              <td>17</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              4:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              15:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              17:21
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              18:19
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              22:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              35:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              36:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              39:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              52:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              53:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              56:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              69:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              70:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              73:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              82:22
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              86:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              87:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\unit\middlewares\validate-pagging.test.js</a></td>
+              <td>15</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              4:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              7:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              12:16
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              15:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              19:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              22:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              26:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              31:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              36:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              41:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              47:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              50:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              53:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              56:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              63:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\unit\middlewares\validate-user-request.test.js</a></td>
+              <td>13</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              3:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              6:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              11:21
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              12:19
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              14:16
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              17:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              22:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              23:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              26:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              33:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              34:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              37:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              43:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\unit\middlewares\error-handler.test.js</a></td>
+              <td>11</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              4:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              5:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              7:21
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              8:19
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              16:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              20:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              23:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              25:21
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              26:19
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              32:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              36:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\unit\middlewares\handler.test.js</a></td>
+              <td>10</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              3:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              6:18
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              8:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              10:21
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              13:22
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              17:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              18:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              21:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              22:21
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;jest&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              26:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\__tests__\integration\routes\health-routes.test.js</a></td>
+              <td>8</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              4:1
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;describe&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              7:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;beforeEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              11:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;afterEach&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              16:5
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;it&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              19:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              20:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              21:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr><tr class="msg-danger"><td class="location-col">
+                              22:9
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;expect&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\index.js</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              24:21
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;next&#x27; is defined but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\middlewares\error-handler.js</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              4:35
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;next&#x27; is defined but never used.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-unused-vars">no-unused-vars</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="danger"><td>            <a class="toggle-link" href="javascript:;" onclick="toggleDetails(this)">C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\middlewares\multer-upload.js</a></td>
+              <td>1</td>
+              <td>0</td></tr><tr class="details-row hidden">
+                <td colspan="3">
+                  <table class="details-table">
+                    <tbody><tr class="msg-danger"><td class="location-col">
+                              19:29
+                          </td>
+                          <td class="severity-col">Error</td>
+                          <td class="message-col">&#x27;Buffer&#x27; is not defined.</td>
+                            <td class="rule-col"><a href="http://eslint.org/docs/rules/no-undef">no-undef</a></td>
+      </tr></tbody>
+                  </table>
+                </td>
+              </tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\controllers\controller.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\controllers\files-controller.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\controllers\users-controller.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\coverage\lcov-report\block-navigation.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\coverage\lcov-report\prettify.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\coverage\lcov-report\sorter.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\db-pool.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\db\files-crud.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\db\users-crud.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\errors\custom-error-class.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\errors\duplicate-username.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\errors\empty-files-body.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\errors\file-not-found.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\errors\invalid-query-parameters.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\errors\no-thumbnail.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\errors\password-incorrect.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\errors\user-not-found.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\middlewares\authentificate-user.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\middlewares\handler.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\middlewares\validate-get-pagging-req.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\middlewares\validate-user-request.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\routes\files-routes.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\routes\health-routes.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\routes\users-routes.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\startup\check-app-env-variables.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\startup\create-console-logger.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\startup\create-exceptions-logger.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\startup\create-logger.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\utils\audio-video-duration.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\utils\get-host-ip.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\utils\redis-api.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\utils\shell-runtime.js</td>
+              <td>0</td>
+              <td>0</td></tr><tr class="success"><td>C:\Users\aball\Documents\nodeProjets\NodeApps\HomeServer\utils\video-thumbnail-generator.js</td>
+              <td>0</td>
+              <td>0</td></tr></tbody>
+      </table>
+
+  </div>
+</body>
+</html>

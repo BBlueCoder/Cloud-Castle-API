@@ -12,3 +12,4 @@ README.md
 set-variables.sh
 setup-db.sh
 setup-test-db.sh
+coverage/

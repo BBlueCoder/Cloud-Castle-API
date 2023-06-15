@@ -1,8 +1,8 @@
 const redisAPI = require('../utils/redis-api');
 
 class Controller {
-        constructor(req, resp) {
-            this.req = req;
+    constructor(req, resp) {
+        this.req = req;
         this.resp = resp;
     }
 

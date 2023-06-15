@@ -4,7 +4,9 @@
   "description": "An Api for my home server",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --coverage --no-cache"
+    "test": "jest --detectOpenHandles --coverage",
+    "pretty": "prettier --write .",
+    "lint":"npx eslint . --fix  --format node_modules/eslint-html-reporter/reporter.js --output-file eslint-report.html"
   },
   "author": "BBlueCoder",
   "license": "ISC",
