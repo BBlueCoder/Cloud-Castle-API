@@ -27,7 +27,7 @@ jobs:
         run: npx prettier --write .
 
       - name: Run ESLint
-        run: npx eslint . --fix  --format=node_modules/eslint-html-reporter/reporter.js --output-file=eslint-report.html
+        run: npx eslint . --fix  --format="$(npm bin)/eslint-html-reporter/reporter.js" --output-file=eslint-report.html
         
       - name: Upload lint report
         uses: actions/upload-artifact@v3.1.2
