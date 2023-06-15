@@ -4,11 +4,11 @@
 //The next function call the error-handler middleware since it is the last middleware
 
 module.exports = function (handler) {
-  return async (req, resp, next) => {
-    try {
-      await handler(req, resp);
-    } catch (ex) {
-      next(ex);
-    }
-  };
+    return async (req, resp, next) => {
+        try {
+            await handler(req, resp);
+        } catch (ex) {
+            next(ex);
+        }
+    };
 };

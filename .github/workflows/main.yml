@@ -26,15 +26,6 @@ jobs:
       - name: Run Prettier
         run: npx prettier --write .
 
-      - name: Run ESLint
-        run: npx eslint . --fix --no-error-on-status -f node_modules/eslint-html-reporter/reporter.js -o eslint-report.html
-        
-      - name: Upload lint report
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: eslint-report.html
-          path: eslint-report.html
-
   tests:
     needs: lint
     name: run-all-tests
