@@ -1,5 +1,48 @@
 # Cloud-Castle-API
-A REST-API that stores files on server and save its data on a Postgress database. Built using `Express.js` framework.
+Cloud Castle API is a server-side application built in using `Node.js`. 
+
+## Application Scope
+The application is a simple server that you can run in your local network as a local cloud storage to save files and retrieve them. It uses postgres DB to save the metadata of each file. You can host it in your local machine or in docker containers.
+
+## Tech-Stack
+This project uses various popular packages in The Node ecosystem.
+
+* Tech-stack
+  *  [express](https://www.npmjs.com/package/express)
+     + responsible for managing the server and routes.
+  *  [pg](https://www.npmjs.com/package/pg)
+     + connects with the postgres DB.
+  *  [multer](https://www.npmjs.com/package/multer)
+     + uploads files to the host.
+  *  [redis](https://www.npmjs.com/package/redis)
+     + for caching the data.
+  *  [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+     + generates a token for authenticating.
+  *  [bcrypt](https://www.npmjs.com/package/bcrypt)
+     + hashing password.
+  *  [cors](https://www.npmjs.com/package/cors)
+     + a middleware for express to enable CORS.
+  *  [config](https://www.npmjs.com/package/config)
+     + configures env variables.
+  *  [joi](https://www.npmjs.com/package/joi)
+     + validates objects schema.
+  *  [winston](https://www.npmjs.com/package/winston)
+     + for logging.
+  *  [jest](https://www.npmjs.com/package/jest)
+     + for writing unit and integration tests.
+  *  [supertest](https://www.npmjs.com/package/supertest)
+     + tests HTTP calls.
+  *  [eslint](https://www.npmjs.com/package/eslint)
+     + checks for bugs and code style.
+  *  [eslint-html-reporter](https://www.npmjs.com/package/eslint-html-reporter)
+     + generates a report for eslint results in html format.
+  *  [prettier](https://www.npmjs.com/package/prettier)
+     + enforces an unified style.
+
+## Architecture
+This project uses a Layered Architecture, it separates the application into multiple layers, each with its own specific responsibility.
+By dividing the app into smaller parts, it reduces the complixity and it facilitates maintaining the app. This way we can easily test any part of the app 
+and each feature can be developed in isolation.
 
 
 ## API Reference
