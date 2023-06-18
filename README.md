@@ -13,7 +13,7 @@ The application is a simple server that you can run in your local network as a l
   - [Create the Database](#create-the-database)
   - [Install Redis](#install-redis)
   - [Clone the project](#clone-the-project)
-  - [Run Locally](#clone-the-project)
+  - [Run Locally](#run-locally)
 - [API Reference](#api-reference)
 
 ## Tech-Stack
