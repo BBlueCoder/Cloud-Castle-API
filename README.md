@@ -4,6 +4,18 @@ Cloud Castle API is a server-side application built in using `Node.js`.
 ## Application Scope
 The application is a simple server that you can run in your local network as a local cloud storage to save files and retrieve them. It uses postgres DB to save the metadata of each file. You can host it in your local machine or in docker containers.
 
+- [Tech-Stack](#tech-stack)
+- [Architecture](#architecture)
+- [App Architecture](#app-architecture)
+- [Getting Started](#getting-started)
+  - [Install Node.js](#install-nodejs)
+  - [Install Postgres](#install-postgres)
+  - [Create the Database](#create-the-database)
+  - [Install Redis](#install-redis)
+  - [Clone the project](#clone-the-project)
+  - [Run Locally](#clone-the-project)
+- [API Reference](#api-reference)
+
 ## Tech-Stack
 This project uses various popular packages in The Node ecosystem.
 
