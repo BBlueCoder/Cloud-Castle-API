@@ -49,14 +49,124 @@ and each feature can be developed in isolation.
 ### App Architecture
 Inside the app's main folder, you will come across three distinct directories: "routes," "controllers," and "db." The "routes" directory houses the layers responsible for handling the presentation layer. These layers tackle incoming HTTP requests, ensuring their validity, and subsequently pass them to the "controllers" layer. The "controllers" layer, on the other hand, bears the responsibility of executing any business logic. Should it require any data from the database, it communicates with the corresponding layers found within the "db" directory, which efficiently handle all database operations.
 
+![App Workflow](https://github.com/BBlueCoder/Cloud-Castle-API/blob/master/diagrams/app_workflow.png)
+
+## Getting Started
+To run the app in your machine follow these steps 
+
+#### Install Node.js
+Download and install [`Node.js`](https://nodejs.org/en/download) in your machine.
+
+#### Install Postgres
+This app uses a postgres DB, check the official [link](https://www.postgresql.org/download/) and donwload postgres then install it in your machine.
+
+##### Create the Database
+After you install the app, it is time to create the database.
+You can use either [`psql cli`](https://www.postgresql.org/docs/current/app-psql.html) or ['pgAdmin'](https://www.pgadmin.org/) to run any sql query in postgres. 
+ * Create Role :
+```sql
+  CREATE ROLE role_name WITH LOGIN PASSWORD 'role_password';
+  ```
+ * Add persmission to create databases to the role :
+```sql
+  ALTER ROLE role_name CREATEDB;
+  ```
+ * Create database :
+```sql
+  CREATE DATABASE db_name;
+  ```
+ * Create tables :
+   Copy the script in the [`db-setup.sql`](https://github.com/BBlueCoder/Cloud-Castle-API/blob/master/db-setup.sql) and run it.
+
+#### Install Redis
+The app use `Redis` for caching, check the official [link](https://redis.io/docs/getting-started/installation/) and install it.
+
+After you install redis, you need to run it, use `redis-server` command to start redis.
+
+`Note : The app can work without redis.`
+
+#### Clone the project
+Clone the project to your machine :
+```bash
+   git clone https://github.com/BBlueCoder/Cloud-Castle-API.git
+  ```
+Go to the project directory
+
+```bash
+  cd Cloud-Castle-API
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+#### Run locally
+After you finish all the previous steps you are ready to launch the app.
+
+Open the [`run-app-script.sh`](https://github.com/BBlueCoder/Cloud-Castle-API/blob/master/run-app-script.sh) file and replace the values with your values.
+
+Be default postgres uses port 5432, and redis uses port 6379, don't change those unless you change the default ports.
+
+Run `./run-app-script.sh` after you change the values of the env variables.
+
+To check if everything is working fine, you can send a `GET` request to `http://localhost:3000/api/health`, it will send back a response like this :
+```json
+   {
+    "server": "192.168.100.80",
+    "database": true,
+    "cache": false
+   }
+ ```
+if the connection is successful it will return true, if not it will return false. 
 
 ## API Reference
+The app returns every response in a json format.
+
+To make any request to `files` endpoint you must send an `Authentication` header that has a `token` in the request's headers.
+
+To obtain a token you must login, or signup if you don't have an account yet.
+
+The token is valid for 35 minutes.
+
+![App Workflow](https://github.com/BBlueCoder/Cloud-Castle-API/blob/master/diagrams/api_endpoints.png)
+
+#### Create an acount
+
+```http
+  POST /api/users/signup
+```
+
+Send a json body in this format : 
+
+```json
+   {
+     "username":"user1",
+     "password":"Passw@rd"
+   }
+ ```
+
+#### Login
+
+```http
+  POST /api/users/login
+```
+
+Send the same body as the previous request.
 
 #### Get all files
 
 ```http
   GET /api/files
 ```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `limit`      | `Int` | **Optional**. for pagging define the limit |
+| `offset`      | `Int` | **Optional**. for pagging define the offset |
+| `sort_order`      | `String` | **Optional**. by default sort is descending, send `asc` if you want to sort the order to be ascending|
+| `file_type`      | `String` | **Optional**. to filter the files send the type of files you want|
 
 #### Get file's metadata
 
