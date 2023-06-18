@@ -44,6 +44,11 @@ This project uses a Layered Architecture, it separates the application into mult
 By dividing the app into smaller parts, it reduces the complixity and it facilitates maintaining the app. This way we can easily test any part of the app 
 and each feature can be developed in isolation.
 
+![Layered Architecture](https://github.com/BBlueCoder/Cloud-Castle-API/blob/master/diagrams/Layered_Architecure.png)
+
+### App Architecture
+Inside the app's main folder, you will come across three distinct directories: "routes," "controllers," and "db." The "routes" directory houses the layers responsible for handling the presentation layer. These layers tackle incoming HTTP requests, ensuring their validity, and subsequently pass them to the "controllers" layer. The "controllers" layer, on the other hand, bears the responsibility of executing any business logic. Should it require any data from the database, it communicates with the corresponding layers found within the "db" directory, which efficiently handle all database operations.
+
 
 ## API Reference
 
